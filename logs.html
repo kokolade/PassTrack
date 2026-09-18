@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <script>
+    if (sessionStorage.getItem("passtrack_admin_authed") !== "true") {
+      window.location.replace("./index.html");
+    }
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PassTrack — Attendance</title>
+
+  <link rel="stylesheet" href="./css/styles.css">
+  <script type="module" src="./js/app.js"></script>
+</head>
+
+<body data-page="logs">
+
+<header class="topbar">
+  <a class="brand" href="./index.html">
+    <span class="brand-mark">P</span>
+    <span>
+      <strong>PassTrack</strong>
+      <small>Attendance Management</small>
+    </span>
+  </a>
+
+  <nav class="nav">
+    <a href="./index.html" data-nav="kiosk">Kiosk</a>
+    <a href="./logs.html" data-nav="logs">Attendance</a>
+    <a href="./roster.html" data-nav="roster">Roster</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <section class="page-heading">
+    <div>
+      <p class="eyebrow">ADMINISTRATION</p>
+      <h1>Attendance Records</h1>
+      <p class="muted">
+        Monitor shifts, breaks and attendance activity.
+      </p>
+    </div>
+
+    <button id="lock-admin" class="button button-secondary">
+      Lock Admin
+    </button>
+  </section>
+
+  <section class="metric-grid">
+
+    <article class="metric-card">
+      <span>Employees</span>
+      <strong id="metric-employees">0</strong>
+      <small>Active staff</small>
+    </article>
+
+    <article class="metric-card">
+      <span>Currently Working</span>
+      <strong id="metric-working">0</strong>
+      <small>Active shifts</small>
+    </article>
+
+    <article class="metric-card">
+      <span>On Break</span>
+      <strong id="metric-break">0</strong>
+      <small>Active breaks</small>
+    </article>
+
+    <article class="metric-card">
+      <span>Today's Hours</span>
+      <strong id="metric-hours">0h</strong>
+      <small>Completed shifts</small>
+    </article>
+
+  </section>
+
+  <section class="panel">
+
+    <div class="panel-header">
+      <div>
+        <h2>Attendance Log</h2>
+        <p class="muted">Latest attendance activity.</p>
+      </div>
+
+      <div class="toolbar">
+        <input
+          id="log-search"
+          class="input"
+          type="search"
+          placeholder="Search employee..."
+        >
+
+        <select id="log-filter" class="input">
+          <option value="ALL">All statuses</option>
+          <option value="WORKING">Working</option>
+          <option value="ON_BREAK">On Break</option>
+          <option value="OFF_DUTY">Completed</option>
+          <option value="AUTO_EXPIRED">Auto Expired</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th>Clock In</th>
+            <th>Clock Out</th>
+            <th>Status</th>
+            <th>Break</th>
+            <th>Work Time</th>
+          </tr>
+        </thead>
+
+        <tbody id="logs-table-body"></tbody>
+      </table>
+
+      <div id="logs-empty" class="empty-state hidden">
+        No attendance records found.
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+</body>
+</html>

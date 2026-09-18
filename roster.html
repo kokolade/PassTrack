@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <script>
+    if (sessionStorage.getItem("passtrack_admin_authed") !== "true") {
+      window.location.replace("./index.html");
+    }
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PassTrack — Roster</title>
+
+  <link rel="stylesheet" href="./css/styles.css">
+  <script type="module" src="./js/app.js"></script>
+</head>
+
+<body data-page="roster">
+
+<header class="topbar">
+  <a class="brand" href="./index.html">
+    <span class="brand-mark">P</span>
+    <span>
+      <strong>PassTrack</strong>
+      <small>Attendance Management</small>
+    </span>
+  </a>
+
+  <nav class="nav">
+    <a href="./index.html" data-nav="kiosk">Kiosk</a>
+    <a href="./logs.html" data-nav="logs">Attendance</a>
+    <a href="./roster.html" data-nav="roster">Roster</a>
+  </nav>
+</header>
+
+<main class="page">
+
+  <section class="page-heading">
+    <div>
+      <p class="eyebrow">ADMINISTRATION</p>
+      <h1>Staff Directory</h1>
+      <p class="muted">
+        Manage employees and PassTrack settings.
+      </p>
+    </div>
+
+    <button id="lock-admin" class="button button-secondary">
+      Lock Admin
+    </button>
+  </section>
+
+  <div class="admin-grid">
+
+    <section class="panel">
+
+      <div class="panel-header">
+        <div>
+          <h2>Add Employee</h2>
+          <p class="muted">Create a new staff record.</p>
+        </div>
+      </div>
+
+      <form id="staff-form" class="form">
+
+        <label>
+          Employee ID
+          <input
+            id="staff-id"
+            class="input"
+            required
+            maxlength="20"
+            placeholder="EMP001"
+          >
+        </label>
+
+        <label>
+          Full Name
+          <input
+            id="staff-name"
+            class="input"
+            required
+            maxlength="100"
+            placeholder="John Doe"
+          >
+        </label>
+
+        <label>
+          Department
+          <input
+            id="staff-department"
+            class="input"
+            maxlength="100"
+            placeholder="Operations"
+          >
+        </label>
+
+        <button class="button button-primary" type="submit">
+          Add Employee
+        </button>
+
+      </form>
+
+    </section>
+
+    <section class="panel">
+
+      <div class="panel-header">
+        <div>
+          <h2>Admin PIN</h2>
+          <p class="muted">
+            Change the PIN required for management pages.
+          </p>
+        </div>
+      </div>
+
+      <form id="pin-form" class="form">
+
+        <label>
+          Current PIN
+          <input
+            id="current-pin"
+            class="input"
+            type="password"
+            inputmode="numeric"
+            maxlength="20"
+            required
+          >
+        </label>
+
+        <label>
+          New PIN
+          <input
+            id="new-pin"
+            class="input"
+            type="password"
+            inputmode="numeric"
+            maxlength="20"
+            minlength="4"
+            required
+          >
+        </label>
+
+        <label>
+          Confirm New PIN
+          <input
+            id="confirm-pin"
+            class="input"
+            type="password"
+            inputmode="numeric"
+            maxlength="20"
+            minlength="4"
+            required
+          >
+        </label>
+
+        <button class="button button-primary" type="submit">
+          Change PIN
+        </button>
+
+      </form>
+
+    </section>
+
+  </div>
+
+  <section class="panel">
+
+    <div class="panel-header">
+      <div>
+        <h2>Staff Directory</h2>
+        <p class="muted">All registered employees.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Status</th>
+            <th>Added</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="staff-table-body"></tbody>
+      </table>
+
+      <div id="staff-empty" class="empty-state hidden">
+        No employees registered.
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="panel">
+
+    <div class="panel-header">
+      <div>
+        <h2>Backup & Restore</h2>
+        <p class="muted">
+          Export PassTrack data or restore from a JSON backup.
+        </p>
+      </div>
+    </div>
+
+    <div class="backup-actions">
+
+      <button id="export-json" class="button button-primary">
+        Export JSON
+      </button>
+
+      <button id="export-csv" class="button button-secondary">
+        Export CSV
+      </button>
+
+      <label class="file-button">
+        Import JSON
+        <input
+          id="import-json"
+          type="file"
+          accept=".json,application/json"
+          hidden
+        >
+      </label>
+
+    </div>
+
+    <p id="backup-message" class="form-message"></p>
+
+  </section>
+
+</main>
+
+</body>
+</html>

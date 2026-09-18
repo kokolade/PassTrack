@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1220">
+  <title>PassTrack — Kiosk</title>
+
+  <link rel="stylesheet" href="./css/styles.css">
+
+  <script type="module" src="./js/app.js"></script>
+</head>
+
+<body data-page="kiosk">
+
+<header class="topbar">
+  <a class="brand" href="./index.html">
+    <span class="brand-mark">P</span>
+    <span>
+      <strong>PassTrack</strong>
+      <small>Attendance Management</small>
+    </span>
+  </a>
+
+  <nav class="nav">
+    <a href="./index.html" data-nav="kiosk">Kiosk</a>
+    <a href="./logs.html" data-nav="logs">Attendance</a>
+    <a href="./roster.html" data-nav="roster">Roster</a>
+  </nav>
+</header>
+
+<main class="page kiosk-page">
+
+  <section class="kiosk-hero">
+    <div>
+      <p class="eyebrow">PUBLIC TERMINAL</p>
+      <h1>Employee Check-In</h1>
+      <p class="muted">
+        Enter your employee ID to record attendance.
+      </p>
+    </div>
+
+    <div class="clock-card">
+      <span id="live-date">Loading...</span>
+      <strong id="live-clock">--:--:--</strong>
+    </div>
+  </section>
+
+  <section class="kiosk-terminal">
+
+    <div class="terminal-display">
+
+      <div id="terminal-message" class="terminal-message">
+        <span class="status-dot"></span>
+        Ready for employee ID
+      </div>
+
+      <div class="employee-display">
+        <span>EMPLOYEE ID</span>
+        <strong id="employee-input">_</strong>
+      </div>
+
+      <div id="employee-preview" class="employee-preview hidden"></div>
+
+    </div>
+
+    <div id="keypad" class="keypad">
+
+      <button class="key" data-key="1">1</button>
+      <button class="key" data-key="2">2</button>
+      <button class="key" data-key="3">3</button>
+
+      <button class="key" data-key="4">4</button>
+      <button class="key" data-key="5">5</button>
+      <button class="key" data-key="6">6</button>
+
+      <button class="key" data-key="7">7</button>
+      <button class="key" data-key="8">8</button>
+      <button class="key" data-key="9">9</button>
+
+      <button class="key key-secondary" data-action="clear">
+        CLEAR
+      </button>
+
+      <button class="key" data-key="0">0</button>
+
+      <button class="key key-primary" data-action="submit">
+        ENTER
+      </button>
+
+    </div>
+
+    <div id="context-actions" class="context-actions hidden"></div>
+
+  </section>
+
+  <section class="kiosk-footer">
+  <span>PassTrack Terminal</span>
+  <span>•</span>
+  <span>All attendance times are recorded automatically</span>
+
+  <button id="admin-access" class="button button-secondary" type="button">
+    Admin Access
+  </button>
+</section>
+</main>
+
+</body>
+</html>
