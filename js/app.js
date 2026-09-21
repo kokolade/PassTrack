@@ -281,3 +281,26 @@ boot().catch(error => {
     error
   );
 });
+// Intercept navigation to protected management pages
+document.addEventListener('DOMContentLoaded', () => {
+  const protectedLinks = document.querySelectorAll('[data-nav="logs"], [data-nav="roster"]');
+
+  protectedLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const isAuthed = sessionStorage.getItem('passtrack_admin_authed') === 'true';
+
+      if (!isAuthed) {
+        e.preventDefault(); // Prevents instant page navigation
+        
+        const targetUrl = link.getAttribute('href');
+        
+        // Open your PIN modal logic here
+        if (typeof openPinModal === 'function') {
+          openPinModal(targetUrl);
+        } else if (typeof showPinModal === 'function') {
+          showPinModal(targetUrl);
+        }
+      }
+    });
+  });
+});
