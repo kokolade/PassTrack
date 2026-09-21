@@ -1,22 +1,22 @@
 :root {
   --bg: #07101f;
   --bg-soft: #0c1729;
-  --panel: #101d31;
-  --panel-2: #14243b;
-  --border: #263752;
+  --panel: #061833;
+  --panel-2: #010b1c;
+  --border: #d6dde9;
 
-  --text: #f5f7fb;
+  --text: #f5f8fa;
   --muted: #91a0b7;
 
-  --primary: #4f8cff;
-  --primary-dark: #3778eb;
+  --primary: #1365fc;
+  --primary-dark: #e4e6ea;
 
   --success: #35d07f;
-  --warning: #f4bd50;
-  --danger: #f26464;
+  --warning: #f3a303;
+  --danger: #f40909;
 
   --radius: 16px;
-  --shadow: 0 18px 45px rgba(0, 0, 0, 0.24);
+  --shadow: 0 18px 45px rgba(7, 27, 245, 0.768);
 }
 
 * {
@@ -34,7 +34,7 @@ body {
   background:
     radial-gradient(
       circle at top right,
-      rgba(79, 140, 255, 0.09),
+      rgba(18, 1, 75, 0.807),
       transparent 35%
     ),
     var(--bg);
@@ -80,7 +80,7 @@ a {
 
   border-bottom: 1px solid var(--border);
 
-  background: rgba(7, 16, 31, 0.88);
+  background: rgba(0, 16, 43, 0.88);
 
   backdrop-filter: blur(12px);
 
@@ -218,7 +218,7 @@ a {
 
 .button-primary {
   background: var(--primary);
-  color: white;
+  color: rgb(243, 239, 239);
 }
 
 .button-primary:hover {
@@ -338,7 +338,7 @@ a {
 
   border-radius: 14px;
 
-  background: #081221;
+  background: #04032a;
 
   border: 1px solid var(--border);
 
@@ -575,7 +575,7 @@ th,
 td {
   padding: 15px 20px;
 
-  border-bottom: 1px solid rgba(38, 55, 82, 0.7);
+  border-bottom: 1px solid rgba(221, 220, 220, 0.7);
 
   text-align: left;
 
@@ -607,7 +607,7 @@ tr:last-child td {
 }
 
 .status-working {
-  color: #72e6a8;
+  color: #0804f5;
   background: rgba(53, 208, 127, 0.1);
 }
 
