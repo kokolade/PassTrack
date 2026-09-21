@@ -21,27 +21,23 @@ import {
   initRoster
 } from "./roster.js";
 
-async function showAdminLogin() {
-  const existing =
-    document.querySelector(
-      "#admin-login-modal"
-    );
+
+async function showAdminLogin(targetUrl = "./logs.html") {
+  const existing = document.querySelector("#admin-login-modal");
 
   if (existing) {
     return;
   }
 
-  const modal =
-    document.createElement("div");
+  const modal = document.createElement("div");
 
-  modal.id =
-    "admin-login-modal";
+  modal.id = "admin-login-modal";
 
   modal.innerHTML = `
     <div style="
       position:fixed;
       inset:0;
-      z-index:999;
+      z-index:9999;
       display:grid;
       place-items:center;
       padding:20px;
@@ -90,6 +86,7 @@ async function showAdminLogin() {
           required
           style="
             width:100%;
+            box-sizing:border-box;
             padding:14px;
             border-radius:10px;
             border:1px solid #263752;
@@ -105,6 +102,7 @@ async function showAdminLogin() {
             color:#ff8b8b;
             font-size:12px;
             min-height:18px;
+            margin:10px 0;
           "
         ></p>
 
@@ -149,101 +147,94 @@ async function showAdminLogin() {
 
   document.body.appendChild(modal);
 
-  const form =
-    modal.querySelector(
-      "#admin-login-form"
-    );
-
-  const pin =
-    modal.querySelector(
-      "#admin-pin"
-    );
-
-  const error =
-    modal.querySelector(
-      "#admin-login-error"
-    );
+  const form = modal.querySelector("#admin-login-form");
+  const pin = modal.querySelector("#admin-pin");
+  const error = modal.querySelector("#admin-login-error");
 
   pin.focus();
 
-  form.addEventListener(
-    "submit",
-    async event => {
-      event.preventDefault();
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
 
-      const valid =
-        await authenticate(pin.value);
+    error.textContent = "";
+
+    try {
+      const valid = await authenticate(pin.value);
 
       if (!valid) {
-        error.textContent =
-          "Incorrect administrator PIN.";
-
+        error.textContent = "Incorrect administrator PIN.";
         pin.select();
-
         return;
       }
 
       modal.remove();
 
-      window.location.href =
-        "./logs.html";
-    }
-  );
+      window.location.href = targetUrl;
 
-  modal.querySelector(
-    "#cancel-admin-login"
-  ).addEventListener(
+    } catch (loginError) {
+      console.error("Admin login failed:", loginError);
+      error.textContent = "Unable to verify PIN. Please try again.";
+    }
+  });
+
+  modal.querySelector("#cancel-admin-login").addEventListener(
     "click",
     () => modal.remove()
   );
+
+  modal.addEventListener("click", event => {
+    if (event.target === modal.firstElementChild) {
+      modal.remove();
+    }
+  });
+
+  document.addEventListener("keydown", function escapeHandler(event) {
+    if (event.key === "Escape") {
+      modal.remove();
+      document.removeEventListener("keydown", escapeHandler);
+    }
+  });
 }
 
+
 function setupNavigation() {
-  const page =
-    document.body.dataset.page;
+  const page = document.body.dataset.page;
 
   document
     .querySelectorAll("[data-nav]")
     .forEach(link => {
-
-      if (
-        link.dataset.nav === page
-      ) {
+      if (link.dataset.nav === page) {
         link.classList.add("active");
       }
     });
 
   document
-    .querySelectorAll(
-      'a[href="./logs.html"], a[href="./roster.html"]'
-    )
+    .querySelectorAll('[data-nav="logs"], [data-nav="roster"]')
     .forEach(link => {
 
-      link.addEventListener(
-        "click",
-        async event => {
+      link.addEventListener("click", async event => {
 
-          if (
-            isAdminAuthenticated()
-          ) {
-            return;
-          }
-
-          event.preventDefault();
-
-          await showAdminLogin();
+        if (isAdminAuthenticated()) {
+          return;
         }
-      );
+
+        event.preventDefault();
+
+        const targetUrl = link.getAttribute("href");
+
+        await showAdminLogin(targetUrl);
+      });
+
     });
 }
+
 
 async function boot() {
   await initializeAdminPin();
 
   setupNavigation();
 
-  const page =
-    document.body.dataset.page;
+  const page = document.body.dataset.page;
 
   if (page === "kiosk") {
     startClock();
@@ -251,15 +242,10 @@ async function boot() {
     return;
   }
 
-  if (
-    page === "logs" ||
-    page === "roster"
-  ) {
-    if (!isAdminAuthenticated()) {
-      window.location.replace(
-        "./index.html"
-      );
+  if (page === "logs" || page === "roster") {
 
+    if (!isAdminAuthenticated()) {
+      window.location.replace("./index.html");
       return;
     }
 
@@ -275,32 +261,7 @@ async function boot() {
   }
 }
 
+
 boot().catch(error => {
-  console.error(
-    "PassTrack failed to start:",
-    error
-  );
-});
-// Intercept navigation to protected management pages
-document.addEventListener('DOMContentLoaded', () => {
-  const protectedLinks = document.querySelectorAll('[data-nav="logs"], [data-nav="roster"]');
-
-  protectedLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      const isAuthed = sessionStorage.getItem('passtrack_admin_authed') === 'true';
-
-      if (!isAuthed) {
-        e.preventDefault(); // Prevents instant page navigation
-        
-        const targetUrl = link.getAttribute('href');
-        
-        // Open your PIN modal logic here
-        if (typeof openPinModal === 'function') {
-          openPinModal(targetUrl);
-        } else if (typeof showPinModal === 'function') {
-          showPinModal(targetUrl);
-        }
-      }
-    });
-  });
+  console.error("PassTrack failed to start:", error);
 });
